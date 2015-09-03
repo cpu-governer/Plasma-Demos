@@ -8,7 +8,7 @@
 void palette_bw(SDL_PixelFormat *fmt, Palette *pal)
 {
         for(int x = 0; x < PAL_SIZE; x++) {
-                float grey = SCL_COL(sin(M_PI * x / 16.0));
+                float grey = SCL_COL(sin((x * M_PI / 180.0) / 16.0));
                 pal->colors[x] = SDL_MapRGB(fmt, (int)grey, (int)grey, (int)grey);
         }
 }

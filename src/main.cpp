@@ -53,11 +53,6 @@ void vertical_line(SDL_Surface* surf, int x, int color)
         }
 }
 
-float dist(float x1, float y1, float x2, float y2)
-{
-       return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-}
-
 void draw_plasma1(SDL_Surface* surf, int w, int h, int time)
 {
         uint32_t *pixels = (uint32_t *)surf->pixels;
@@ -92,9 +87,9 @@ int main(int argc, char** argv)
                         0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 
         srand(time(NULL));
-        palette_rainbow(logsurf->format, &pal);
+        palette_bw(logsurf->format, &pal);
         create_plasma(&plasma, DEF_LOG_SIZE_X, DEF_LOG_SIZE_Y);
-        plasma_basic(&plasma);
+        plasma_circle(&plasma);
         bool isRunning = true;
         while(isRunning) {
                 SDL_Event ev;
