@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 
 #include "palette.h"
+#include "plasma.h"
 
 #define DEF_LOG_SIZE_X 160
 #define DEF_LOG_SIZE_Y 120
@@ -23,7 +24,7 @@
 #define tand(x) (tan(torad((x))))
 
 Palette pal;
-int plasma[DEF_LOG_SIZE_X][DEF_LOG_SIZE_Y];
+Plasma plasma;
 
 float dist(float, float, float, float);
 
@@ -38,7 +39,7 @@ void gen_plasma()
                                 127 + 127 * sin(dist(x, y, 0, 0) / 8.0) +
                                 127 + 127 * sin(dist(x, y, 160, 120) / 8.0);
 
-                        plasma[x][y] = (int)(mag / 3);
+                        plasma.data[x + y * plasma.w] = (int)(mag / 3);
                 }
         }
 }
@@ -65,7 +66,7 @@ void draw_plasma1(SDL_Surface* surf, int w, int h, int time)
 
         for(int x = 0; x < w; x++) {
                 for(int y = 0; y < h; y++) {
-                        int pixel = pal.colors[(plasma[x][y] + paletteShift) % 256];
+                        int pixel = pal.colors[(plasma.data[x + y * plasma.w] + paletteShift) % 256];
                         unsigned char r, g, b;
                         SDL_GetRGB(pixel, surf -> format, &r, &g, &b);
                         pixels[x + y * w] = SDL_MapRGB(surf -> format, (int)r, (int)g, (int)b);
@@ -91,10 +92,9 @@ int main(int argc, char** argv)
                         0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 
         srand(time(NULL));
-        while(palette_rainbow_rand(logsurf -> format, &pal) == false) {
-                printf("Generated bad palette...\n");
-        }
-        gen_plasma();
+        palette_rainbow(logsurf->format, &pal);
+        create_plasma(&plasma, DEF_LOG_SIZE_X, DEF_LOG_SIZE_Y);
+        plasma_basic(&plasma);
         bool isRunning = true;
         while(isRunning) {
                 SDL_Event ev;

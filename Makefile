@@ -18,7 +18,7 @@ INCDIR := -Iinclude
 
 OBJDIR := obj
 
-SRCFILES_ := main.cpp palette.cpp
+SRCFILES_ := main.cpp palette.cpp plasma.cpp
 
 SRCFILES := $(addprefix $(SRCDIR)/,$(SRCFILES_))
 OBJFILES := $(addprefix $(OBJDIR)/,$(SRCFILES_:.cpp=.o))
